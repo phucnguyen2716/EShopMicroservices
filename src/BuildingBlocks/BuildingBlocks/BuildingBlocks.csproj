@@ -1,4 +1,5 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -7,10 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-     <PackageReference Include="MediatR" Version="12.2.0" />
+    <PackageReference Include="Carter" Version="8.0.0" />
+    <PackageReference Include="Mapster" Version="7.4.0" />
+    <PackageReference Include="MediatR" Version="12.2.0" />
   </ItemGroup>
-  
+
   <ItemGroup>
-      <Folder Include="CQRS\" />
+    <Compile Include="../CQRS/**/*.cs" />
   </ItemGroup>
+
 </Project>
