@@ -25,6 +25,6 @@ internal class CreateProductCommandHandler : ICommandHandler<CreateProductComman
         //save to database
         
         //return result
-        return new CreateProductResult(new Guid());
+        return new CreateProductResult(Guid.NewGuid());
     }
 }
