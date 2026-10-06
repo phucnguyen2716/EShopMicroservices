@@ -1,5 +1,3 @@
-using BuildingBlock.CQRS;
-
 namespace Catalog.API.GetProducts;
 
 public record GetProductsQuery() : IQuery<GetProductsResult>;

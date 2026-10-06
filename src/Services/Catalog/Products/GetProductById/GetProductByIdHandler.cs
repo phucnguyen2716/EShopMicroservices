@@ -1,17 +1,20 @@
-using BuildingBlock.CQRS;
-
 namespace Catalog.API.GetProdductsById;
 
 public record GetProductByIdQuery(Guid Id) : IQuery<GetProductByIdResult>;
 
 public record GetProductByIdResult(Product Product);
 
-internal class GetProductByIdHandler (IDocumentSession session)
+internal class GetProductByIdHandler (IDocumentSession session,ILogger logger)
     : IQueryHandler<GetProductByIdQuery, GetProductByIdResult>
 {
-    public async Task<GetProductByIdResult> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
+    public async Task<GetProductByIdResult> Handle(GetProductByIdQuery query, CancellationToken cancellationToken)
     {
-        var products = await session.Query<Product>().FirstOrDefaultAsync( p => p.Id == request.Id );
-        return new GetProductByIdResult(products!);
+        logger.LogInformation("GetProductByIdQueryHandler.Handle call with {@Query}",query);
+        var product = await session.LoadAsync<Product>(query.Id,cancellationToken);
+        if(product is null)
+        {
+            throw new ProductNotFoundException();
+        }
+        return new GetProductByIdResult(product);
     }
 }

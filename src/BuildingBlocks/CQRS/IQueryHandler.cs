@@ -1,6 +1,6 @@
 using BuildingBlocks.CQRS;
 using MediatR;
-namespace BuildingBlock.CQRS;
+namespace BuildingBlocks.CQRS;
 
 public interface IQueryHandler<in TQuery, TRespone>
     : IRequestHandler<TQuery, TRespone>
