@@ -1,5 +1,5 @@
 
-namespace Catalog.API.GetProdductsById;
+namespace Catalog.API.Products.GetProdductsById;
 
 
 
