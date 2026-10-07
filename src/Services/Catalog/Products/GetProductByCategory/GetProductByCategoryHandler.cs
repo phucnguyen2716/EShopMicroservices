@@ -10,9 +10,9 @@ internal class GetProductByCategoryHandler(IDocumentSession session, ILogger<Get
     public async Task<GetProductByCategoryResult> Handle(GetProductByCategoryQuery query, CancellationToken cancellationToken)
     {
         logger.LogInformation("GetProductByCategoryQueryHandler.Handle call with {@Query}",query);
-
+        string decoded = Uri.UnescapeDataString(query.Category);
         var products= await session.Query<Product>()
-            .Where(x=>x.Category.Contains(query.Category))
+            .Where(x=>x.Category.Contains(decoded))
             .ToListAsync();
 
         if(products is null)
