@@ -10,7 +10,7 @@ internal class UpdateProductHandler(IDocumentSession session, ILogger<UpdateProd
 {
     public async Task<UpdateProductResult> Handle(UpdateProductCommand command, CancellationToken cancellationToken)
     {
-        logger.LogInformation("UpdateProductsHandler.Handle call with {@Query}",command);
+        logger.LogInformation("UpdateProductHandler.Handle call with {@Query}",command);
         var product= await session.LoadAsync<Product>(command.Id,cancellationToken);
         
         if (product is null) throw new ProductNotFoundException();

@@ -10,9 +10,7 @@ internal class DeleteProductHander(IDocumentSession session, ILogger<DeleteProdu
     public async Task<DeleteProductResult> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
     {
         logger.LogInformation("DeleteProductHandler.Handle call with {@Query}",request);
-        var product = await session.LoadAsync<Product>(request.Id,cancellationToken);
-        if (product is null)    throw new ProductNotFoundException();
-        session.Delete(product);
+        session.Delete<Product>(request.Id);
         await session.SaveChangesAsync(cancellationToken);
         return new DeleteProductResult(true);
     }
