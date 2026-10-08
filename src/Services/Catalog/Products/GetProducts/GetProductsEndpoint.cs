@@ -14,7 +14,7 @@ public class GetProductEndpoint : ICarterModule
        }) 
         .WithName("GetProducts")
         .DisableAntiforgery()
-        .Produces<GetProductsRespone>(StatusCodes.Status201Created)
+        .Produces<GetProductsRespone>(StatusCodes.Status200OK)
         .ProducesProblem(StatusCodes.Status400BadRequest)
         .WithSummary("Get Products")
         .WithDescription("Get Products");

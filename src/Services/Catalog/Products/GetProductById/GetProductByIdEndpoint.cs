@@ -17,7 +17,7 @@ public class GetProductByIdEndpoint : ICarterModule
         }) 
         .WithName("GetProductById")
         .DisableAntiforgery()
-        .Produces<GetProductByIdRespone>(StatusCodes.Status201Created)
+        .Produces<GetProductByIdRespone>(StatusCodes.Status200OK)
         .ProducesProblem(StatusCodes.Status400BadRequest)
         .WithSummary("Get Product By Id")
         .WithDescription("Get Product By Id");

@@ -8,16 +8,16 @@ public class UpdateProductEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapPut("/product/update/{id:guid}",async (UpdateProductRequest request,ISender sender)=>
+        app.MapPut("/product/update",async (UpdateProductRequest request,ISender sender)=>
         {
-            var command = request.Adapt<UpdateProductResult>();
-            var respone = sender.Send(command);
+             var command = request.Adapt<UpdateProductCommand>();
+            var respone = await sender.Send(command);
             var result = respone.Adapt<UpdateProductResponse>();
             return Results.Ok(result);
         })
-        .WithName("Update Product")
+        .WithName("UpdateProduct")
         .DisableAntiforgery()
-        .Produces<UpdateProductResponse>(StatusCodes.Status201Created)
+        .Produces<UpdateProductResponse>(StatusCodes.Status200OK)
         .ProducesProblem(StatusCodes.Status400BadRequest)
         .WithSummary("Update Product")
         .WithDescription("Update Product");
