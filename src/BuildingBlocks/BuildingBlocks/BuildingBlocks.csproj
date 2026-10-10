@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <Compile Include="../CQRS/**/*.cs" />
+    <Compile Include="../Behaviors/**/*.cs" />
   </ItemGroup>
 
 </Project>
