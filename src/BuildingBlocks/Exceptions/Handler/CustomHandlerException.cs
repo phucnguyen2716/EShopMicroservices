@@ -56,7 +56,14 @@ public class CustomHandlerException
             Instance=context.Request.Path
         };
         if(exception is ValidationException validationException)
-            problemDetails.Extensions.Add("Validation Errors", validationException.Errors);
+        {
+            var errors= validationException.Errors.Select(error=> new
+            {
+               error.PropertyName,
+               error.ErrorMessage 
+            });
+            problemDetails.Extensions.Add("Validation Errors", errors);
+        }
         await context.Response.WriteAsJsonAsync(problemDetails, cancellationToken: cancellationToken);
         return true;
     }
