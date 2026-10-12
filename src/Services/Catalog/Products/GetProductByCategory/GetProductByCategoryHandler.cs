@@ -16,9 +16,11 @@ internal class GetProductByCategoryHandler(IDocumentSession session, ILogger<Get
             .Where(x=>x.Category.Contains(decoded))
             .ToListAsync(cancellationToken);
 
-        if(products is null)
+        if (products is null)
         {
-            throw new ProductNotFoundException();
+            throw new NotFoundException(
+                $"Products in category '{query.Category}' not found."
+            );
         }
         return new GetProductByCategoryResult(products);
     }

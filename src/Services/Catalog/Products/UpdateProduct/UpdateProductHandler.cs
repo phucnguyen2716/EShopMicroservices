@@ -22,7 +22,7 @@ internal class UpdateProductHandler(IDocumentSession session, ILogger<UpdateProd
         logger.LogInformation("UpdateProductHandler.Handle call with {@Query}",command);
         var product= await session.LoadAsync<Product>(command.Id,cancellationToken);
         
-        if (product is null) throw new ProductNotFoundException();
+        if (product is null) throw new ProductNotFoundException(command.Id);
 
         product.Name = command.Name;
         product.Description = command.Description;

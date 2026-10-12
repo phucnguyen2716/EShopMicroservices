@@ -1,4 +1,5 @@
 using BuildingBlocks.Behaviors;
+using BuildingBlocks.Exceptions.Handler;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,6 +17,7 @@ builder.Services.AddMarten(opts=>
 {
     opts.Connection(builder.Configuration.GetConnectionString("Database")!);
 }).UseLightweightSessions();
+builder.Services.AddExceptionHandler<CustomHandlerException>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 var app = builder.Build();
@@ -24,46 +26,7 @@ var app = builder.Build();
 app.MapCarter();
 app.UseSwagger();
 app.UseSwaggerUI();
-app.UseExceptionHandler(exceptionHandlerApp =>
-{
-    exceptionHandlerApp.Run(async context =>
-    {
-        // 1. Lấy exception đã xảy ra
-        var exception = context.Features
-            .Get<IExceptionHandlerFeature>()?.Error;
-
-        // Không có exception thì kết thúc
-        if (exception == null)
-        {
-            return;
-        }
-
-        // 2. Tạo nội dung response lỗi
-        var problemDetails = new ProblemDetails
-        {
-            Title = exception.Message,
-            Status = StatusCodes.Status500InternalServerError,
-            Detail = exception.StackTrace
-        };
-
-        // 3. Ghi log lỗi
-        var logger = context.RequestServices
-            .GetRequiredService<ILogger<Program>>();
-
-        logger.LogError(exception, exception.Message);
-
-        // 4. Thiết lập HTTP response
-        context.Response.StatusCode =
-            StatusCodes.Status500InternalServerError;
-
-        context.Response.ContentType =
-            "application/problem+json";
-
-        // 5. Trả JSON lỗi cho client
-        await context.Response.WriteAsJsonAsync(problemDetails);
-    });
-});
-
+app.UseExceptionHandler(options=>{});
 app.Run();
 
 
