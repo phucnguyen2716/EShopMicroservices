@@ -6,11 +6,11 @@ public record UpdateProductCommand(Guid Id, string Name,List<string> Category,st
 public class UpdateProductCommandValidator : AbstractValidator<UpdateProductCommand>
 {
     public UpdateProductCommandValidator(){
-        RuleFor(x=>x.Id).NotEmpty().WithMessage("Product Id is required");
-        RuleFor(x=>x.Name)
+        RuleFor(command=>command.Id).NotEmpty().WithMessage("Product Id is required");
+        RuleFor(command=>command.Name)
             .NotEmpty().WithMessage("Name is required")
             .Length(2,150).WithMessage("Name must be between 2 and 150 characters");
-        RuleFor(x=>x.Price).GreaterThan(0).WithMessage("Price must be greater than 0");
+        RuleFor(command=>command.Price).GreaterThan(0).WithMessage("Price must be greater than 0");
     }
 }
 public record UpdateProductResult(Product Product);
