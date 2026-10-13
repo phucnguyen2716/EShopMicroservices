@@ -7,6 +7,7 @@ var assembly= typeof(Program).Assembly;
 builder.Services.AddMediatR(config=>
 {
     config.RegisterServicesFromAssembly(assembly);
+    config.AddOpenBehavior(typeof(LoggingBehavior<,>));
     config.AddOpenBehavior(typeof(ValiddationBehavior<,>));
 });
 builder.Services.AddCarter();
