@@ -12,9 +12,14 @@ public class CustomHandlerException
 {
     public async ValueTask<bool> TryHandleAsync(HttpContext context, Exception exception, CancellationToken cancellationToken)
     {
-        logger.LogInformation(
+        var correlationId= context.Items["X-Correlation-ID"]?.ToString();
+        logger.LogError(
             "Error Message: {exceptionMessage}, Time of Concurrence: {time}"
             ,exception.Message,DateTime.UtcNow);
+        logger.LogError(
+            exception,
+            "Request failed. CorrelationId: {CorrelationId}",
+            correlationId);
         (string Detail,string Title,int StatusCode) details = exception switch
         {
             InternalServerException=>
@@ -48,13 +53,16 @@ public class CustomHandlerException
                 context.Response.StatusCode=StatusCodes.Status500InternalServerError   
             )
         };
+       
+
         var problemDetails= new ProblemDetails
         {
             Title= details.Title,
             Detail=details.Detail,
             Status=details.StatusCode,
-            Instance=context.Request.Path
+            Instance=context.Request.Path,
         };
+        problemDetails.Extensions.Add("correlationId",correlationId);
         if(exception is ValidationException validationException)
         {
             var errors= validationException.Errors.Select(error=> new

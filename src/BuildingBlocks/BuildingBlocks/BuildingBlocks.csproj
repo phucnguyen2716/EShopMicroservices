@@ -19,6 +19,7 @@
     <Compile Include="../CQRS/**/*.cs" />
     <Compile Include="../Behaviors/**/*.cs" />
     <Compile Include="../Exceptions/**/*.cs" />
+     <Compile Include="../Middleware/**/*.cs" />
   </ItemGroup>
 
 </Project>
