@@ -22,11 +22,13 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 // Configure the HTTP pipeline
-app.MapCarter();
-app.UseSwagger();
-app.UseSwaggerUI();
 app.UseMiddleware<CorrelationIdMiddleware>();
 app.UseExceptionHandler(options=>{});
+
+app.UseSwagger();
+app.UseSwaggerUI();
+
+app.MapCarter();
 app.Run();
 
 
