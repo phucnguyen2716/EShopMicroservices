@@ -4,19 +4,14 @@ using Marten.Schema;
 namespace Catalog.API.Data;
 public class InitialCatalogData: IInitialData
 {
-    private readonly object[] _initialData;
 
-    public InitialCatalogData(params object[] initialData)
-    {
-        _initialData = initialData;
-    }
-
-    public async Task Populate(IDocumentStore store, CancellationToken cancellation)
+    public async Task Populate(IDocumentStore store, CancellationToken cancellationToken)
     {
         await using var session = store.LightweightSession();
-       
-        session.Store<Product>(GetConfiguratedProducts());
-        await session.SaveChangesAsync();
+        if(await session.Query<Product>().AnyAsync())
+            return;
+        session.Store(GetConfiguratedProducts());
+        await session.SaveChangesAsync(cancellationToken);
     }
 
 
