@@ -1,14 +1,33 @@
-version: '3.4'
 
 services:
   catalogdb:
     container_name: catalogdb
     environment:
-    - POSTGRES_USER=nguyenhoangphuc
-    - POSTGRES_PASSWORD=123
-    - POSTGRES_DB=CatalogDb
+      POSTGRES_USER: nguyenhoangphuc
+      POSTGRES_PASSWORD: "123"
+      POSTGRES_DB: CatalogDb
     restart: always
     ports:
-      -  "5432:5432"
+      - "5432:5432"
     volumes:
-      - postgres_catalog:/var/lib/postgresql/
+      - postgres_catalog_fresh:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nguyenhoangphuc -d CatalogDb"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  catalog.api:
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_HTTP_PORTS: 8080
+      ConnectionStrings__Database: "Host=catalogdb;Port=5432;Database=CatalogDb;Username=nguyenhoangphuc;Password=123;Include Error Detail=true"
+    depends_on:
+      catalogdb:
+        condition: service_healthy
+    ports:
+      - "6000:8080"
+    volumes:
+      - ${APPDATA:-./.appdata}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA:-./.appdata}/ASP.NET/Https:/home/app/.asp/https:ro

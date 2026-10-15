@@ -1,3 +1,4 @@
+
 # =========================
 # BASE
 # =========================
@@ -22,17 +23,20 @@ ARG BUILD_CONFIGURATION=Release
 
 WORKDIR /src
 
-COPY ["Services/Catalog/Catalog.API/Catalog.API.csproj", "Services/Catalog/Catalog.API/"]
-
-RUN dotnet restore "./Services/Catalog/Catalog.API/Catalog.API.csproj"
-
+# Copy all source code and project files
 COPY . .
 
-WORKDIR "/src/Services/Catalog/Catalog.API"
+# Restore Catalog API and its project dependencies
+RUN dotnet restore "Services/Catalog/Catalog.API.csproj"
 
-RUN dotnet build "./Catalog.API.csproj" \
+# Move to Catalog API project directory
+WORKDIR /src/Services/Catalog
+
+# Build project
+RUN dotnet build "Catalog.API.csproj" \
     -c $BUILD_CONFIGURATION \
-    -o /app/build
+    -o /app/build \
+    --no-restore
 
 
 # =========================
@@ -43,10 +47,11 @@ FROM build AS publish
 
 ARG BUILD_CONFIGURATION=Release
 
-RUN dotnet publish "./Catalog.API.csproj" \
+RUN dotnet publish "Catalog.API.csproj" \
     -c $BUILD_CONFIGURATION \
     -o /app/publish \
-    /p:UseAppHost=false
+    /p:UseAppHost=false \
+    --no-restore
 
 
 # =========================
