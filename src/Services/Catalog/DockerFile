@@ -23,11 +23,17 @@ ARG BUILD_CONFIGURATION=Release
 
 WORKDIR /src
 
-# Copy all source code and project files
-COPY . .
+# Copy Catalog API project file
+COPY ["Services/Catalog/Catalog.API.csproj", "Services/Catalog/"]
 
-# Restore Catalog API and its project dependencies
+# Copy BuildingBlocks project file
+COPY ["BuildingBlocks/BuildingBlocks/BuildingBlocks.csproj", "BuildingBlocks/BuildingBlocks"]
+
+# Restore dependencies
 RUN dotnet restore "Services/Catalog/Catalog.API.csproj"
+
+# Copy remaining source code
+COPY . .
 
 # Move to Catalog API project directory
 WORKDIR /src/Services/Catalog
