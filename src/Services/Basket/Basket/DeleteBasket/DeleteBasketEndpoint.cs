@@ -3,13 +3,13 @@ using FastExpressionCompiler.ImTools;
 
 namespace Basket.API.DeleteBasket;
 
-public class DeleteBasketResponse(bool IsSuccess);
+public record DeleteBasketResponse(bool isSuccess);
 
 public class DeleteBasketEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapDelete("/basket",async(string userName,ISender sender) =>
+        app.MapDelete("/basket/{userName}",async(string userName,ISender sender) =>
         {
             var result = await sender.Send(new DeleteBasketCommand(userName));
             var response = result.Adapt<DeleteBasketResponse>();
