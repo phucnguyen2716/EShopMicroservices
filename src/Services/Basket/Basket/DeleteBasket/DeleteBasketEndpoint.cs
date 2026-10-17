@@ -12,7 +12,7 @@ public class DeleteBasketEndpoint : ICarterModule
         app.MapDelete("/basket",async(string userName,ISender sender) =>
         {
             var result = await sender.Send(new DeleteBasketCommand(userName));
-            var response = result.Adapt<DeleteBasketResult>();
+            var response = result.Adapt<DeleteBasketResponse>();
             return Results.Ok(response);
         })
          .WithName("DeleteProduct")
