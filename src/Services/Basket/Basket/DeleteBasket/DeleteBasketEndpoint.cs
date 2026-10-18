@@ -15,11 +15,11 @@ public class DeleteBasketEndpoint : ICarterModule
             var response = result.Adapt<DeleteBasketResponse>();
             return Results.Ok(response);
         })
-         .WithName("DeleteProduct")
+         .WithName("DeleteBasket")
         .DisableAntiforgery()
         .Produces<DeleteBasketResponse>(StatusCodes.Status200OK)
         .ProducesProblem(StatusCodes.Status400BadRequest)
-        .WithSummary("Delete Product")
-        .WithDescription("Delete Product");
+        .WithSummary("Delete Basket")
+        .WithDescription("Delete Basket");
     }
 }

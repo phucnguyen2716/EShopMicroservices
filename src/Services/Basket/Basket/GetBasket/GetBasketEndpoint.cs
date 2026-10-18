@@ -15,11 +15,11 @@ public class GetBasketEndpoint : ICarterModule
            var response = result.Adapt<GetBasketRespone>();
            return Results.Ok(response);
        })
-        .WithName("GetProductById")
+        .WithName("GetBasketByUserName")
         .DisableAntiforgery()
         .Produces<GetBasketRespone>(StatusCodes.Status200OK)
         .ProducesProblem(StatusCodes.Status400BadRequest)
-        .WithSummary("Get Product By Id")
-        .WithDescription("Get Product By Id");
+        .WithSummary("Get Basket By UserName")
+        .WithDescription("Get Basket By UserName");
     }
 }
