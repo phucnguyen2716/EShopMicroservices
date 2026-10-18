@@ -1,0 +1,27 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Catalog.API",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build Catalog.API",
+            "program": "${workspaceFolder}/src/Services/Catalog/bin/Debug/net8.0/Catalog.API.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/Services/Catalog",
+            "stopAtEntry": false,
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Basket.API",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build Basket.API",
+            "program": "${workspaceFolder}/src/Services/Basket/bin/Debug/net8.0/Basket.API.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/Services/Basket",
+            "stopAtEntry": false,
+            "console": "integratedTerminal"
+        }
+    ]
+}

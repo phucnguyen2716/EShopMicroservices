@@ -16,11 +16,11 @@ public class StoreBasketEndpoint : ICarterModule
            var response = result.Adapt<StoreBasketResponse>();
            return Results.Created($"/basket/{response.UserName}",response);
        })
-        .WithName("Create Product")
+        .WithName("StoreBasket")
         .DisableAntiforgery()
         .Produces<StoreBasketResponse>(StatusCodes.Status201Created)
         .ProducesProblem(StatusCodes.Status400BadRequest)
-        .WithSummary("Create Product")
-        .WithDescription("Create Product");
+        .WithSummary("Store Basket")
+        .WithDescription("Store Basket");
     }
 }
