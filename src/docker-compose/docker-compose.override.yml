@@ -18,6 +18,18 @@ services:
       retries: 10
       start_period: 10s
 
+  basketdb:
+    container_name: basketdb
+    environment:
+      POSTGRES_USER: nguyenhoangphuc
+      POSTGRES_PASSWORD: "123"
+      POSTGRES_DB: BasketDb
+    restart: always
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_basket:/var/lib/postgresql/data
+
   catalog.api:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
