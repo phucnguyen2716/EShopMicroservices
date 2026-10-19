@@ -1,6 +1,7 @@
 using BuildingBlocks.Exceptions.Handler;
 using BuildingBlocks.Middleware;
 using Marten;
+using Microsoft.Extensions.Caching.Distributed;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +20,13 @@ builder.Services.AddMarten(opts=>
     opts.Schema.For<ShoppingCart>().Identity(x=>x.UserName);
 }).UseLightweightSessions();
 builder.Services.AddScoped<IBasketRepository,BasketRepository>();
+builder.Services.Decorate<IBasketRepository,CacheBasketRepository>();
+
 builder.Services.AddExceptionHandler<CustomHandlerException>();
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetConnectionString("Redis");
+});
 var app = builder.Build();
 // Configure the HTTP pipeline
 app.UseExceptionHandler(options => { });
