@@ -1,3 +1,5 @@
+using BuildingBlocks.Exceptions.Handler;
+using BuildingBlocks.Middleware;
 using Marten;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,9 +19,12 @@ builder.Services.AddMarten(opts=>
     opts.Schema.For<ShoppingCart>().Identity(x=>x.UserName);
 }).UseLightweightSessions();
 builder.Services.AddScoped<IBasketRepository,BasketRepository>();
+builder.Services.AddExceptionHandler<CustomHandlerException>();
 var app = builder.Build();
-
 // Configure the HTTP pipeline
-app.MapCarter();
-app.Run();
+app.UseExceptionHandler(options => { });
+app.UseMiddleware<CorrelationIdMiddleware>();
 
+app.MapCarter();
+
+app.Run();

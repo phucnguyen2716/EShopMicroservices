@@ -16,10 +16,11 @@ public class CustomHandlerException
         logger.LogError(
             "Error Message: {exceptionMessage}, Time of Concurrence: {time}"
             ,exception.Message,DateTime.UtcNow);
-        logger.LogError(
-            exception,
-            "Request failed. CorrelationId: {CorrelationId}",
-            correlationId);
+        if(!string.IsNullOrWhiteSpace(correlationId))
+            logger.LogError(
+                exception,
+                "Request failed. CorrelationId: {CorrelationId}",
+                correlationId);
         (string Detail,string Title,int StatusCode) details = exception switch
         {
             InternalServerException=>
@@ -62,7 +63,8 @@ public class CustomHandlerException
             Status=details.StatusCode,
             Instance=context.Request.Path,
         };
-        problemDetails.Extensions.Add("correlationId",correlationId);
+        if(!string.IsNullOrWhiteSpace(correlationId))
+            problemDetails.Extensions.Add("correlationId",correlationId);
         if(exception is ValidationException validationException)
         {
             var errors= validationException.Errors.Select(error=> new
