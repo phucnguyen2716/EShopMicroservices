@@ -18,9 +18,11 @@ public class CacheBasketRepository
         var basket = await repository.GetBasket(UserName,cancellationToken);
         await cache.SetStringAsync(
             UserName,
-            JsonSerializer.Serialize(basket),
-            cancellationToken
-        );
+            JsonSerializer.Serialize(basket),new DistributedCacheEntryOptions
+            {
+                AbsoluteExpiration = DateTimeOffset.UtcNow.AddMinutes(30)
+            },
+            cancellationToken);
 
         return basket;
     }
