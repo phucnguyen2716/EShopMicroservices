@@ -27,7 +27,7 @@ WORKDIR /src
 COPY ["Services/Catalog/Catalog.API.csproj", "Services/Catalog/"]
 
 # Copy BuildingBlocks project file
-COPY ["BuildingBlocks/BuildingBlocks/BuildingBlocks.csproj", "BuildingBlocks/BuildingBlocks"]
+COPY ["BuildingBlocks/BuildingBlocks/BuildingBlocks.csproj", "BuildingBlocks/BuildingBlocks/"]
 
 # Restore dependencies
 RUN dotnet restore "Services/Catalog/Catalog.API.csproj"
