@@ -8,6 +8,7 @@ public class CacheBasketRepository
     (IBasketRepository repository,IDistributedCache cache)
     : IBasketRepository
 {
+    private readonly SemaphoreSlim _lock = new SemaphoreSlim(1,1);
     public async Task<ShoppingCart> GetBasket(string UserName, CancellationToken cancellationToken = default)
     {
         var cacheBasket = await cache.GetStringAsync(UserName,cancellationToken);
@@ -15,28 +16,52 @@ public class CacheBasketRepository
         {
             return JsonSerializer.Deserialize<ShoppingCart>(cacheBasket)!;
         }
-        var basket = await repository.GetBasket(UserName,cancellationToken);
-        await cache.SetStringAsync(
-            UserName,
-            JsonSerializer.Serialize(basket),new DistributedCacheEntryOptions
-            {
-                AbsoluteExpiration = DateTimeOffset.UtcNow.AddMinutes(30)
-            },
-            cancellationToken);
+        await _lock.WaitAsync(cancellationToken);
+        try
+        {
+            var basket = await repository.GetBasket(UserName,cancellationToken);
+            await cache.SetStringAsync(
+                UserName,
+                JsonSerializer.Serialize(basket),new DistributedCacheEntryOptions
+                {
+                    AbsoluteExpiration = DateTimeOffset.UtcNow.AddMinutes(30)
+                },
+                cancellationToken);
 
-        return basket;
+            return basket;
+        }
+        finally
+        {
+            _lock.Release();
+        }
     }
 
     public async Task<ShoppingCart> StoreBasket(ShoppingCart basket, CancellationToken cancellationToken = default)
     {
-        await repository.StoreBasket(basket,cancellationToken);
-        await cache.SetStringAsync(basket.UserName,JsonSerializer.Serialize(basket),cancellationToken);
-        return basket;
+        await _lock.WaitAsync(cancellationToken);
+        try{
+            await repository.StoreBasket(basket,cancellationToken);
+            await cache.SetStringAsync(basket.UserName,JsonSerializer.Serialize(basket),cancellationToken);
+            return basket;
+        }
+        finally
+        {
+            _lock.Release();
+        }
     }
      public async Task<bool> DeleteBasket(string UserName, CancellationToken cancellationToken = default)
     {
-       await repository.DeleteBasket(UserName,cancellationToken);
-       await cache.RemoveAsync(UserName,cancellationToken);
-       return true;
+        await _lock.WaitAsync(cancellationToken);
+        try
+        {
+            await repository.DeleteBasket(UserName,cancellationToken);
+            await cache.RemoveAsync(UserName,cancellationToken);
+            return true;
+        }
+        finally
+        {
+            _lock.Release();
+        }
+       
     }
 }
