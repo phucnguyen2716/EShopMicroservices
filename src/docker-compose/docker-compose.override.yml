@@ -44,6 +44,23 @@ services:
         condition: service_healthy
     ports:
       - "6000:8080"
+      - "6060:8081"
+    volumes:
+      - ${APPDATA:-./.appdata}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA:-./.appdata}/ASP.NET/Https:/home/app/.asp/https:ro
+  
+  basket.api:
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_HTTP_PORTS: 8080
+      ConnectionStrings__Database: "Host=basketdb;Port=5433;Database=BasketDb;Username=nguyenhoangphuc;Password=123;Include Error Detail=true"
+      ConnectionStrings__Redis: "distributedcache: 6379"
+    depends_on:
+      - basketdb
+      - distributedcache
+    ports:
+      - "6001:8080"
+      - "6061:8081"
     volumes:
       - ${APPDATA:-./.appdata}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA:-./.appdata}/ASP.NET/Https:/home/app/.asp/https:ro

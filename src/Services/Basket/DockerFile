@@ -1,0 +1,25 @@
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 as base
+USER app
+WORKDIR /app
+EXPOSE 8080
+EXPOSE 8081
+
+FROM mcr.microsoft.com/dotnet/sdk:8.0 as build
+ARG BUILD_CONFIGURATION=Release
+WORKDIR /src
+COPY ["Services/Basket/Basket.API.csproj","Services/Basket/"]
+COPY ["BuildingBlocks/BuildingBlocks/BuildingBlocks.csproj","BuildingBlocks/BuildingBlocks/"]
+RUN dotnet restore "./Services/Basket/Basket.API.csproj"
+COPY . .
+WORKDIR "/src/Services/Basket"
+RUN dotnet build "Basket.API.csproj" -c ${BUILD_CONFIGURATION} -o /app/build
+
+FROM build as publish
+ARG BUILD_CONFIGURATION=Release
+RUN dotnet publish "./Basket.API.csproj" -c ${BUILD_CONFIGURATION} -o /app/publish  /p:UseAppHost=false \
+    --no-restore
+
+FROM base as final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT [ "dotnet","Basket.API.dll" ]
