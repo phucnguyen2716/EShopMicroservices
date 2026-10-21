@@ -5,10 +5,10 @@ using Microsoft.Extensions.Caching.Distributed;
 namespace Basket.API.Data;
 
 public class CacheBasketRepository 
-    (IBasketRepository repository,IDistributedCache cache)
+    (IBasketRepository repository,IDistributedCache cache,CacheLockService lockService)
     : IBasketRepository
 {
-    private readonly SemaphoreSlim _lock = new SemaphoreSlim(1,1);
+    private readonly SemaphoreSlim _lock = lockService.Lock;
     public async Task<ShoppingCart> GetBasket(string UserName, CancellationToken cancellationToken = default)
     {
         var cacheBasket = await cache.GetStringAsync(UserName,cancellationToken);
@@ -41,7 +41,11 @@ public class CacheBasketRepository
         await _lock.WaitAsync(cancellationToken);
         try{
             await repository.StoreBasket(basket,cancellationToken);
-            await cache.SetStringAsync(basket.UserName,JsonSerializer.Serialize(basket),cancellationToken);
+            await cache.SetStringAsync(basket.UserName,JsonSerializer.Serialize(basket),new DistributedCacheEntryOptions
+            {
+                AbsoluteExpiration = DateTimeOffset.UtcNow.AddMinutes(30)
+            },
+            cancellationToken);
             return basket;
         }
         finally
