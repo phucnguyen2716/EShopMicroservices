@@ -1,7 +1,5 @@
-using Microsoft.AspNetCore.Routing.Internal;
-
 namespace Discount.Grpc.Models;
-public class Coupin
+public class Coupon
 {
     public int Id { get; set; }
     public string ProductName { get; set; } = default!;

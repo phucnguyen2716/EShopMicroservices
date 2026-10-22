@@ -20,6 +20,16 @@
                 "${workspaceFolder}/src/Services/Basket/Basket.API.csproj"
             ],
             "problemMatcher": "$msCompile"
+        },
+         {
+            "label": "build Discount.Grpc",
+            "type": "process",
+            "command": "dotnet",
+            "args": [
+                "build",
+                "${workspaceFolder}/src/Services/Discount/Discount.Grpc.csproj"
+            ],
+            "problemMatcher": "$msCompile"
         }
     ]
 }

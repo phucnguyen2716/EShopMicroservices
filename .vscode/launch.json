@@ -22,6 +22,17 @@
             "cwd": "${workspaceFolder}/src/Services/Basket",
             "stopAtEntry": false,
             "console": "integratedTerminal"
+        },
+         {
+            "name": "Discount.Grpc",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build Basket.API",
+            "program": "${workspaceFolder}/src/Services/Discount/bin/Debug/net8.0/Discount.Grpc.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/Services/Discount",
+            "stopAtEntry": false,
+            "console": "integratedTerminal"
         }
     ]
 }
