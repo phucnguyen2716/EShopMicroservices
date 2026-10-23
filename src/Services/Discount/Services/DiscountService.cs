@@ -24,18 +24,35 @@ public class DiscountService
         var coupon = request.Coupon.Adapt<Coupon>();
         if(coupon is null)
             throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid request object."));
-        dbContext.Add(coupon);
+        dbContext.Coupons.Add(coupon);
         await dbContext.SaveChangesAsync();
         logger.LogInformation("Discount is successfully created. ProductName: {ProductName}",request.Coupon.ProductName);
         var couponModel = coupon.Adapt<CouponModel>();
         return couponModel;
     }
-    public override Task<CouponModel> UpdateDiscount(UpdateDiscountRequest request, ServerCallContext context)
+    public override async Task<CouponModel> UpdateDiscount(UpdateDiscountRequest request, ServerCallContext context)
     {
-        return base.UpdateDiscount(request, context);
+        var coupon = request.Coupon.Adapt<Coupon>();
+        
+        if(coupon is null)
+            throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid request object."));
+        dbContext.Coupons.Update(coupon);
+        await dbContext.SaveChangesAsync();
+        logger.LogInformation("Discount is successfully updated. ProductName: {ProductName}",request.Coupon.ProductName);
+        var couponModel = coupon.Adapt<CouponModel>();
+        return couponModel;
     }
-    public override Task<DeleteDiscountResponse> DeleteDiscount(DeleteDiscountRequest request, ServerCallContext context)
+    public override async Task<DeleteDiscountResponse> DeleteDiscount(DeleteDiscountRequest request, ServerCallContext context)
     {
-        return base.DeleteDiscount(request, context);
+        var coupon = await dbContext
+            .Coupons
+            .FirstOrDefaultAsync(x=>x.ProductName == request.ProductName);
+        
+        if(coupon is null)
+            throw new RpcException(new Status(StatusCode.NotFound, $"Discount with Product Name={request.ProductName}"));
+        dbContext.Coupons.Remove(coupon);
+        await dbContext.SaveChangesAsync();
+        logger.LogInformation("Discount is successfully deleted. ProductName: {ProductName}",request.ProductName);
+        return new DeleteDiscountResponse { Success=true };
     }
 }
