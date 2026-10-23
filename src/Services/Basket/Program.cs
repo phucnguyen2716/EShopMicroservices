@@ -24,7 +24,7 @@ builder.Services.AddMarten(opts=>
 }).UseLightweightSessions();
 builder.Services.AddScoped<IBasketRepository,BasketRepository>();
 builder.Services.Decorate<IBasketRepository,CacheBasketRepository>();
-builder.Services.AddSingleton<CacheBasketRepository>();
+builder.Services.AddSingleton<CacheLockService>();
 builder.Services.AddExceptionHandler<CustomHandlerException>();
 builder.Services.AddStackExchangeRedisCache(options =>
 {

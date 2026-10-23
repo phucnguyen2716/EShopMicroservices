@@ -64,15 +64,22 @@ services:
     volumes:
       - ${APPDATA:-./.appdata}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA:-./.appdata}/ASP.NET/Https:/home/app/.asp/https:ro
+  
   discount.grpc:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_HTTP_PORTS: 8080
       ASPNETCORE_HTTPS_PORTS: 8081
+      ASPNETCORE_Kestrel__Certificates__Default__Path: /https/discount.grpc.pfx
+      ASPNETCORE_Kestrel__Certificates__Default__Password: ${HTTPS_CERT_PASSWORD}
       ConnectionStrings__Database: "Data Source=discountdb"
+
     ports:
       - "6002:8080"
       - "6062:8081"
+
     volumes:
       - ${APPDATA:-./.appdata}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA:-./.appdata}/ASP.NET/Https:/home/app/.asp/https:ro
+      - ${HOME}/.aspnet/https:/https:ro
+
