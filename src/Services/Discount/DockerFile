@@ -1,0 +1,70 @@
+
+# =========================
+# BASE
+# =========================
+
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+
+USER app
+
+WORKDIR /app
+
+EXPOSE 8080
+EXPOSE 8081
+
+
+# =========================
+# BUILD
+# =========================
+
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+
+ARG BUILD_CONFIGURATION=Release
+
+WORKDIR /src
+
+# Copy Discount Grpc project file
+COPY ["Services/Discount/Discount.Grpc.csproj", "Services/Discount/"]
+
+# Restore dependencies
+RUN dotnet restore "Services/Discount/Discount.Grpc.csproj"
+
+# Copy remaining source code
+COPY . .
+
+# Move to Discount Grpc project directory
+WORKDIR /src/Services/Discount
+
+# Build project
+RUN dotnet build "Discount.Grpc.csproj" \
+    -c $BUILD_CONFIGURATION \
+    -o /app/build \
+    --no-restore
+
+
+# =========================
+# PUBLISH
+# =========================
+
+FROM build AS publish
+
+ARG BUILD_CONFIGURATION=Release
+
+RUN dotnet publish "Discount.Grpc.csproj" \
+    -c $BUILD_CONFIGURATION \
+    -o /app/publish \
+    /p:UseAppHost=false \
+    --no-restore
+
+
+# =========================
+# FINAL
+# =========================
+
+FROM base AS final
+
+WORKDIR /app
+
+COPY --from=publish /app/publish .
+
+ENTRYPOINT ["dotnet", "Discount.Grpc.dll"]

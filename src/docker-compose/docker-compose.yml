@@ -15,6 +15,11 @@ services:
     build:
       context: ..
       dockerfile: Services/Basket/DockerFile
+  discount.grpc:
+    image: ${DOCKER_REGISTRRY-}discount.grpc
+    build:
+      context: ..
+      dockerfile: Services/Discount/DockerFile
 
 volumes:
   postgres_catalog:
