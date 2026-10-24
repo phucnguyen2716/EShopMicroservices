@@ -1,5 +1,6 @@
 using BuildingBlocks.Exceptions.Handler;
 using BuildingBlocks.Middleware;
+using Discount.Grpc;
 using HealthChecks.UI.Client;
 using HealthChecks.UI.Core;
 using Marten;
@@ -8,7 +9,9 @@ using Microsoft.Extensions.Caching.Distributed;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+//Add services to the container.
+
+//Application Services
 var assembly=typeof(Program).Assembly;
 builder.Services.AddCarter();
 builder.Services.AddMediatR(config =>
@@ -17,6 +20,8 @@ builder.Services.AddMediatR(config =>
     config.AddOpenBehavior(typeof(ValiddationBehavior<,>));
     config.AddOpenBehavior(typeof(LoggingBehavior<,>));
 });
+
+//Data Services
 builder.Services.AddMarten(opts=>
 {
     opts.Connection(builder.Configuration.GetConnectionString("Database")!);
@@ -25,6 +30,14 @@ builder.Services.AddMarten(opts=>
 builder.Services.AddScoped<IBasketRepository,BasketRepository>();
 builder.Services.Decorate<IBasketRepository,CacheBasketRepository>();
 builder.Services.AddSingleton<CacheLockService>();
+
+//Grpc Servicees
+builder.Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(options =>
+{
+    options.Address = new Uri(builder.Configuration["GrpcSettings:DiscountUrl"]!); 
+});
+
+//Cross-Cutting Service
 builder.Services.AddExceptionHandler<CustomHandlerException>();
 builder.Services.AddStackExchangeRedisCache(options =>
 {
