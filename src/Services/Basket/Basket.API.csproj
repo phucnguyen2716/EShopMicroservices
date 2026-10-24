@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="SemaphoreSlim.Extend" Version="1.0.1" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.84.0" />
     <PackageReference Include="AspNetCore.HealthChecks.Redis" Version="9.0.0" />
     <PackageReference Include="AspNetCore.HealthChecks.NpgSql" Version="8.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.30" />
@@ -25,4 +26,11 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\BuildingBlocks\BuildingBlocks\BuildingBlocks.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="..\..\..\src\Services\Discount\Protos\discount.proto"
+              GrpcServices="Client">
+      <Link>Protos\discount.proto</Link>
+    </Protobuf>
+</ItemGroup>
 </Project>
