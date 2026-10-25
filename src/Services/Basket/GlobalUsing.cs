@@ -6,3 +6,8 @@ global using Basket.API.Exceptions;
 global using Carter;
 global using MediatR;
 global using Mapster;
+global using BuildingBlocks.Exceptions.Handler;
+global using BuildingBlocks.Middleware;
+global using Discount.Grpc;
+global using HealthChecks.UI.Client;
+global using Marten;

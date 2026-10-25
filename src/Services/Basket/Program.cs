@@ -1,11 +1,6 @@
-using BuildingBlocks.Exceptions.Handler;
-using BuildingBlocks.Middleware;
-using Discount.Grpc;
-using HealthChecks.UI.Client;
-using HealthChecks.UI.Core;
-using Marten;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.DependencyInjection;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +30,15 @@ builder.Services.AddSingleton<CacheLockService>();
 builder.Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(options =>
 {
     options.Address = new Uri(builder.Configuration["GrpcSettings:DiscountUrl"]!); 
+})
+.ConfigurePrimaryHttpMessageHandler(()=>
+{
+    var handler = new HttpClientHandler
+    {
+        ServerCertificateCustomValidationCallback =
+        HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+    };
+    return handler;
 });
 
 //Cross-Cutting Service
