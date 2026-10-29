@@ -39,7 +39,7 @@ public class Order : Aggregate<OrderId>
         ShippingAddress = shippingAddress;
         BillingAddress = billingAddress;
         Payment = payment;
-        Order.AddDomainEvent(new OrderUpdatedEvent(this));
+        AddDomainEvent(new OrderUpdatedEvent(this));
     }
     public void Add (ProductId productId, int quantity, decimal price)
     {
