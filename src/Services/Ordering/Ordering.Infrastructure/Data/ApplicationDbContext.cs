@@ -2,7 +2,7 @@ using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Ordering.API.Domain.Models;
 
-namespace Ordering.API.Infrasttructure.Data;
+namespace Ordering.API.Infrastructure.Data;
 
 public class ApplicationDbContext : DbContext
 {
