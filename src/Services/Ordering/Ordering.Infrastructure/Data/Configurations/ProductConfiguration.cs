@@ -1,7 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Ordering.API.Domain.Models;
-using Ordering.API.Domain.ValueOjects;
 
 namespace Ordering.API.Infrastructure.Data.Configurations;
 

@@ -1,8 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Ordering.API.Domain.Enums;
-using Ordering.API.Domain.Models;
-using Ordering.API.Domain.ValueOjects;
+
+
 
 namespace Ordering.API.Infrastructure.Data.Configurations;
 
@@ -43,6 +42,28 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
                     .IsRequired();
             });
         builder.ComplexProperty(
+            o => o.BillingAddress, addressBuilder =>
+            {
+                addressBuilder.Property(a => a.FirstName)
+                    .HasMaxLength(50)
+                    .IsRequired();
+                addressBuilder.Property(a => a.LastName)
+                    .HasMaxLength(50)
+                    .IsRequired();
+                addressBuilder.Property(a => a.EmailAddress)
+                    .HasMaxLength(50);
+                addressBuilder.Property(a => a.AddressLine)
+                    .HasMaxLength(180)
+                    .IsRequired();
+                addressBuilder.Property(a => a.Country)
+                    .HasMaxLength(50);
+                addressBuilder.Property(a => a.State)
+                    .HasMaxLength(50);
+                addressBuilder.Property(a => a.ZipCode)
+                    .HasMaxLength(5)
+                    .IsRequired();
+            });
+        builder.ComplexProperty(
             o => o.Payment, paymentBuilder =>
             {
                 paymentBuilder.Property(p => p.CardName)
@@ -62,6 +83,7 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
                 s => s.ToString(),
                 dbStatus => (OrderStatus)Enum.Parse(typeof(OrderStatus),dbStatus)
             );
+        
         builder.Property(o => o.TotalPrice);
     }
 
