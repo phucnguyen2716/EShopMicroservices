@@ -10,7 +10,7 @@
     <PackageReference Include="SemaphoreSlim.Extend" Version="1.0.1" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.84.0" />
     <PackageReference Include="AspNetCore.HealthChecks.Redis" Version="9.0.0" />
-    <PackageReference Include="AspNetCore.HealthChecks.NpgSql" Version="8.0.2" />
+    <PackageReference Include="AspNetCore.HealthChecks.NpgSql" Version="9.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.30" />
     <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="8.0.1" />
     <PackageReference Include="Scrutor" Version="6.1.0" />
