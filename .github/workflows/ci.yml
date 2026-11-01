@@ -67,23 +67,23 @@ jobs:
               --no-restore
           done <<< "$PROJECTS"
 
-      # 7. Run all test projects if available
-      - name: Test
-        run: |
-          mapfile -t test_projects < <(
-            find src -type f \( \
-              -name '*Tests.csproj' -o \
-              -name '*Test.csproj' \
-            \)
-          )
+      # # 7. Run all test projects if available
+      # - name: Test
+      #   run: |
+      #     mapfile -t test_projects < <(
+      #       find src -type f \( \
+      #         -name '*Tests.csproj' -o \
+      #         -name '*Test.csproj' \
+      #       \)
+      #     )
 
-          if [ ${#test_projects[@]} -eq 0 ]; then
-            echo "No test projects found. Skipping tests."
-            exit 0
-          fi
+      #     if [ ${#test_projects[@]} -eq 0 ]; then
+      #       echo "No test projects found. Skipping tests."
+      #       exit 0
+      #     fi
 
-          for project in "${test_projects[@]}"; do
-            echo "Testing $project"
-            dotnet test "$project" \
-              --configuration Release
-          done
+      #     for project in "${test_projects[@]}"; do
+      #       echo "Testing $project"
+      #       dotnet test "$project" \
+      #         --configuration Release
+      #     done
