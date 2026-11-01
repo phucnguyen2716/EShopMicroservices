@@ -5,6 +5,8 @@ services:
     image: postgres:16
   distributedcache:
     image: redis
+  orderdb:
+    image: mcr.microsoft.com/mssql/server:2022-latest
   catalog.api:
     image: ${DOCKER_REGISTRY-}catalog.api
     build:
