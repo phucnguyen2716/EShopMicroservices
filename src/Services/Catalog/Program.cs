@@ -41,6 +41,6 @@ app.UseHealthChecks("/health",
         ResponseWriter=UIResponseWriter.WriteHealthCheckUIResponse
     });
 app.MapCarter();
-app.Run();
+await app.RunAsync();
 
 

@@ -12,7 +12,7 @@ public class DiscountService
     {
         var coupon = await dbContext
             .Coupons
-            .FirstOrDefaultAsync(x => x.ProductName == request.ProductName);
+            .FirstOrDefaultAsync(x => x.ProductName == request.ProductName,context.CancellationToken);
         if(coupon is null)
             coupon = new Coupon { ProductName="No Discount", Amount=0, Description="No Discount Desc"};
         logger.LogInformation("Discount is retrieved for ProductName: {productName}, Amount: {Amount}",coupon.ProductName,coupon.Amount);
@@ -25,7 +25,7 @@ public class DiscountService
         if(coupon is null)
             throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid request object."));
         dbContext.Coupons.Add(coupon);
-        await dbContext.SaveChangesAsync();
+        await dbContext.SaveChangesAsync(context.CancellationToken);
         logger.LogInformation("Discount is successfully created. ProductName: {ProductName}",request.Coupon.ProductName);
         var couponModel = coupon.Adapt<CouponModel>();
         return couponModel;
@@ -37,7 +37,7 @@ public class DiscountService
         if(coupon is null)
             throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid request object."));
         dbContext.Coupons.Update(coupon);
-        await dbContext.SaveChangesAsync();
+        await dbContext.SaveChangesAsync(context.CancellationToken);
         logger.LogInformation("Discount is successfully updated. ProductName: {ProductName}",request.Coupon.ProductName);
         var couponModel = coupon.Adapt<CouponModel>();
         return couponModel;
@@ -46,12 +46,12 @@ public class DiscountService
     {
         var coupon = await dbContext
             .Coupons
-            .FirstOrDefaultAsync(x=>x.ProductName == request.ProductName);
+            .FirstOrDefaultAsync(x=>x.ProductName == request.ProductName,context.CancellationToken);
         
         if(coupon is null)
             throw new RpcException(new Status(StatusCode.NotFound, $"Discount with Product Name={request.ProductName}"));
         dbContext.Coupons.Remove(coupon);
-        await dbContext.SaveChangesAsync();
+        await dbContext.SaveChangesAsync(context.CancellationToken);
         logger.LogInformation("Discount is successfully deleted. ProductName: {ProductName}",request.ProductName);
         return new DeleteDiscountResponse { Success=true };
     }

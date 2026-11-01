@@ -51,4 +51,4 @@ app.UseHealthChecks("/health", new HealthCheckOptions
 });
 app.MapCarter();
 
-app.Run();
+await app.RunAsync();

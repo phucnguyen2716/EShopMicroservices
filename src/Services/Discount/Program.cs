@@ -15,4 +15,4 @@ if(app.Environment.IsDevelopment())
     app.MapGrpcReflectionService();
 }
 app.MapGrpcService<DiscountService>();
-app.Run();
+await app.RunAsync();

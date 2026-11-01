@@ -20,4 +20,4 @@ var app = builder.Build();
 // Configure the HTTP request pipline
 
 
-app.Run();
+await app.RunAsync();
