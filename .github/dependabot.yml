@@ -1,0 +1,56 @@
+version: 2
+
+updates:
+  # Catalog Service
+  - package-ecosystem: "nuget"
+    directory: "/src/Services/Catalog"
+    schedule:
+      interval: "weekly"
+
+  # Basket Service
+  - package-ecosystem: "nuget"
+    directory: "/src/Services/Basket"
+    schedule:
+      interval: "weekly"
+
+  # Discount Service
+  - package-ecosystem: "nuget"
+    directory: "/src/Services/Discount"
+    schedule:
+      interval: "weekly"
+
+  # Ordering API
+  - package-ecosystem: "nuget"
+    directory: "/src/Services/Ordering/Ordering.API"
+    schedule:
+      interval: "weekly"
+
+  # Ordering Application
+  - package-ecosystem: "nuget"
+    directory: "/src/Services/Ordering/Ordering.Application"
+    schedule:
+      interval: "weekly"
+
+  # Ordering Domain
+  - package-ecosystem: "nuget"
+    directory: "/src/Services/Ordering/Ordering.Domain"
+    schedule:
+      interval: "weekly"
+
+  # Ordering Infrastructure
+  - package-ecosystem: "nuget"
+    directory: "/src/Services/Ordering/Ordering.Infrastructure"
+    schedule:
+      interval: "weekly"
+
+  # BuildingBlocks
+  - package-ecosystem: "nuget"
+    directory: "/src/BuildingBlocks/BuildingBlocks"
+    schedule:
+      interval: "weekly"
+
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"

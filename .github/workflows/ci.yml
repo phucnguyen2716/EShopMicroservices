@@ -1,0 +1,89 @@
+name: EShopMicroservices CI
+
+on:
+  push:
+    branches: [main]
+
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    name: Build and Test All Services
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout source code
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2. Setup .NET SDK
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      # 3. Define all service projects
+      - name: Define Projects
+        run: |
+          cat >> "$GITHUB_ENV" << 'EOF'
+          PROJECTS<<PROJECTS
+          src/Services/Catalog/Catalog.API.csproj
+          src/Services/Basket/Basket.API.csproj
+          src/Services/Discount/Discount.Grpc.csproj
+          src/Services/Ordering/Ordering.API/Ordering.API.csproj
+          PROJECTS
+          EOF
+
+      # 4. Restore all services
+      - name: Restore
+        run: |
+          while IFS= read -r project; do
+            [ -z "$project" ] && continue
+            echo "Restoring $project"
+            dotnet restore "$project"
+          done <<< "$PROJECTS"
+
+      # 5. Check vulnerable NuGet packages
+      - name: Dependency Audit
+        run: |
+          while IFS= read -r project; do
+            [ -z "$project" ] && continue
+            echo "Auditing $project"
+            dotnet list "$project" package --vulnerable --include-transitive
+          done <<< "$PROJECTS"
+
+      # 6. Build all services
+      - name: Build
+        run: |
+          while IFS= read -r project; do
+            [ -z "$project" ] && continue
+            echo "Building $project"
+            dotnet build "$project" \
+              --configuration Release \
+              --no-restore
+          done <<< "$PROJECTS"
+
+      # 7. Run all test projects if available
+      - name: Test
+        run: |
+          mapfile -t test_projects < <(
+            find src -type f \( \
+              -name '*Tests.csproj' -o \
+              -name '*Test.csproj' \
+            \)
+          )
+
+          if [ ${#test_projects[@]} -eq 0 ]; then
+            echo "No test projects found. Skipping tests."
+            exit 0
+          fi
+
+          for project in "${test_projects[@]}"; do
+            echo "Testing $project"
+            dotnet test "$project" \
+              --configuration Release
+          done
