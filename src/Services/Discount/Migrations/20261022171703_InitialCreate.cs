@@ -10,11 +10,18 @@ namespace Discount.Grpc.Migrations
     public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
+        private static readonly string [] CouponsColumns =
+        {
+            "Id", 
+            "Amount",
+            "Description", 
+            "ProductName"
+        };
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
                 name: "Coupons",
-                columns: table => new
+                columns: table => new 
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
@@ -29,7 +36,7 @@ namespace Discount.Grpc.Migrations
 
             migrationBuilder.InsertData(
                 table: "Coupons",
-                columns: new[] { "Id", "Amount", "Description", "ProductName" },
+                columns: CouponsColumns,
                 values: new object[,]
                 {
                     { 1, 10, "Discount 10%", "iPhone 17" },
