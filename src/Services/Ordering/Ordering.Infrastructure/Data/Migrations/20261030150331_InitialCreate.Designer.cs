@@ -10,7 +10,7 @@ using Ordering.API.Infrastructure.Data;
 
 #nullable disable
 
-namespace Ordering.Infrastructure.Data.Migrations
+namespace Ordering.API.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20261030150331_InitialCreate")]
