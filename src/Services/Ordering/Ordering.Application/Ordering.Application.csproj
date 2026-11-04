@@ -12,4 +12,9 @@
       <ProjectReference Include="..\..\..\src\BuildingBlocks\BuildingBlocks\BuildingBlocks.csproj" />
       <ProjectReference Include="..\Ordering.Domain\Ordering.Domain.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Data\" />
+    <Folder Include="Dtos\" />
+    <Folder Include="Orders\**\*.cs" /> 
+  </ItemGroup>
 </Project>
