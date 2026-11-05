@@ -4,3 +4,4 @@ global using BuildingBlocks.CQRS;
 global using FluentValidation;
 global using Ordering.API.Domain.Models;
 global using Ordering.API.Application.Data;
+global using Ordering.API.Domain.ValueOjects;
