@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Ordering.Application;
+namespace Ordering.API.Application;
 
 public static class DependencyInjection 
 {

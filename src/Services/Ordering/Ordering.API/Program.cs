@@ -2,7 +2,7 @@ using Ordering.API;
 using Ordering.API.Infrastructure;
 using Ordering.API.Infrastructure.Data.Extensions;
 
-using Ordering.Application;
+using Ordering.API.Application;
 
 var builder = WebApplication.CreateBuilder(args);
 //Add Services to the container
