@@ -17,5 +17,6 @@
     <Folder Include="Data\" />
     <Folder Include="Dtos\" />
     <Folder Include="Orders\**\*.cs" /> 
+    <Folder Include="Exceptions\" />
   </ItemGroup>
 </Project>

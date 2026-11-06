@@ -5,3 +5,4 @@ global using FluentValidation;
 global using Ordering.API.Domain.Models;
 global using Ordering.API.Application.Data;
 global using Ordering.API.Domain.ValueOjects;
+global using Ordering.API.Application.Exceptions;
