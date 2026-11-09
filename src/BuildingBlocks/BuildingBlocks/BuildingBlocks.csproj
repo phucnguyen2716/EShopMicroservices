@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <Compile Include="../CQRS/**/*.cs" />
+    <Compile Include="../Pagination/**/*.cs" />
     <Compile Include="../Behaviors/**/*.cs" />
     <Compile Include="../Exceptions/**/*.cs" />
      <Compile Include="../Middleware/**/*.cs" />
