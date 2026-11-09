@@ -7,3 +7,4 @@ global using Ordering.API.Application.Data;
 global using Ordering.API.Domain.ValueOjects;
 global using Ordering.API.Application.Exceptions;
 global using Ordering.API.Domain.Events;
+global using Ordering.API.Application.Extensions;
