@@ -14,14 +14,14 @@ public class UpdateOrderHandler (IApplicationDbContext dbContext)
         {
             throw new OrderNotFoundException(command.Order.Id);
         }
-        UpDateOrderWithNewValues(order,command.Order);
+        UpdateOrderWithNewValues(order,command.Order);
         dbContext.Orders.Update(order);
         await dbContext.SavingChangeAsync(cancellationToken);
         
         return new UpdateOrderResult(true);
     }
 
-    public void UpDateOrderWithNewValues(Order order,OrderDto orderDto)
+    private static void UpdateOrderWithNewValues(Order order,OrderDto orderDto)
     {
         var updatedShippingAddress = Address.Of(orderDto.ShippingAddress.FirstName,orderDto.ShippingAddress.LastName,orderDto.ShippingAddress.EmailAddress,orderDto.ShippingAddress.AddressLine,orderDto.ShippingAddress.Country,orderDto.ShippingAddress.State,orderDto.ShippingAddress.ZipCode);
         var updatedBillingAddress =  Address.Of(orderDto.BillingAddress.FirstName,orderDto.BillingAddress.LastName,orderDto.BillingAddress.EmailAddress,orderDto.BillingAddress.AddressLine,orderDto.BillingAddress.Country,orderDto.BillingAddress.State,orderDto.BillingAddress.ZipCode);
