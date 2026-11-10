@@ -12,7 +12,7 @@ public class GetOrderHandler(IApplicationDbContext dbContext)
         var pageIndex = query.PaginationRequest.PageIndex;
         var pageSize = query.PaginationRequest.PageSize;
 
-        var totalCount = await dbContext.Orders.LongCountAsync();
+        var totalCount = await dbContext.Orders.LongCountAsync(cancellationToken);
 
         var orders = await dbContext.Orders
             .Include(order => order.OrderItems)
