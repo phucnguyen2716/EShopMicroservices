@@ -27,10 +27,21 @@
             "name": "Discount.Grpc",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build Basket.API",
+            "preLaunchTask": "build Discount.Grpc",
             "program": "${workspaceFolder}/src/Services/Discount/bin/Debug/net8.0/Discount.Grpc.dll",
             "args": [],
             "cwd": "${workspaceFolder}/src/Services/Discount",
+            "stopAtEntry": false,
+            "console": "integratedTerminal"
+        },
+        {
+             "name": "Ordering.API",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build Ordering.API",
+            "program": "${workspaceFolder}/src/Services/Ordering/Ordering.API/bin/Debug/net8.0/Ordering.API.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/Services/Ordering/Ordering.API",
             "stopAtEntry": false,
             "console": "integratedTerminal"
         }

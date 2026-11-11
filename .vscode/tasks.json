@@ -30,6 +30,16 @@
                 "${workspaceFolder}/src/Services/Discount/Discount.Grpc.csproj"
             ],
             "problemMatcher": "$msCompile"
+        },
+         {
+            "label": "build Ordering.API",
+            "type": "process",
+            "command": "dotnet",
+            "args": [
+                "build",
+                "${workspaceFolder}/src/Services/Ordering/Ordering.API/Ordering.API.csproj"
+            ],
+            "problemMatcher": "$msCompile"
         }
     ]
 }
