@@ -18,7 +18,7 @@ public class GetOrderHandler(IApplicationDbContext dbContext)
             .Include(order => order.OrderItems)
             .OrderBy(order => order.OrderName.Value)
             .Take(pageIndex)
-            .Skip(pageSize*pageIndex)
+            .Skip(pageSize*(pageIndex-1))
             .ToListAsync(cancellationToken);
         
         return new GetOrderResult(

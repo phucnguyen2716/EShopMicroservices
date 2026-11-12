@@ -1,6 +1,8 @@
 
 
 
+using BuildingBlocks.CQRS;
+
 namespace Ordering.API.Endpoints;
 
 public record CreateOrderRequest(OrderDto Order);

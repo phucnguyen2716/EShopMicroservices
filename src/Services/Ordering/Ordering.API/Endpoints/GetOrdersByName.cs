@@ -1,4 +1,3 @@
-
 namespace Ordering.API.Endpoints;
 
 public record GetOrdersByNameResponse(IEnumerable<OrderDto> Orders);
@@ -9,7 +8,7 @@ public class GetOrdersByName : ICarterModule
     {
         app.MapGet("/orders/{orderName}",async (string orderName, ISender sender) =>
         {
-            var result = await sender.Send(orderName);
+            var result = await sender.Send(new GetOrderByNameQuery(orderName));
             var response = result.Adapt<GetOrdersByNameResponse>();
             return Results.Ok(response); 
         })

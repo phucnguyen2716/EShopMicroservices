@@ -3,8 +3,8 @@ using Ordering.API.Application.Orders.Commands.UpdateOrder;
 
 namespace Ordering.API.Endpoints;
 
-public record UpdateOrderRequest(OrderDto OrderDto);
-public record UpdateOrderResponse(bool isSucess);
+public record UpdateOrderRequest(OrderDto Order);
+public record UpdateOrderResponse(bool isSuccess);
 
 public class UpdateOrder : ICarterModule
 {
