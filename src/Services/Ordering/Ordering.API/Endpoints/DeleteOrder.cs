@@ -1,4 +1,3 @@
-
 namespace Ordering.API.Endpoints;
 
 public record DeleteOrderResponse (bool isSucess);
@@ -9,7 +8,7 @@ public class DeleteOrder : ICarterModule
     {
         app.MapDelete("/orders/{id}",async(Guid Id,ISender sender) =>
         {
-            var result = await sender.Send(Id);
+            var result = await sender.Send(new DeleteOrderCommand(Id));
             var response = result.Adapt<DeleteOrderResponse>();
             return Results.Ok(response);
         })
