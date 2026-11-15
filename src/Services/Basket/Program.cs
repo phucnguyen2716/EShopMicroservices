@@ -1,3 +1,4 @@
+using BuildingBlocks.Messaging.MassTransit;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -31,7 +32,8 @@ builder.Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(
 {
     options.Address = new Uri(builder.Configuration["GrpcSettings:DiscountUrl"]!); 
 });
-
+//Async Communication Service
+builder.Services.AddMessageBroker(builder.Configuration);
 //Cross-Cutting Service
 builder.Services.AddExceptionHandler<CustomHandlerException>();
 builder.Services.AddStackExchangeRedisCache(options =>
