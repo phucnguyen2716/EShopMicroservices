@@ -21,6 +21,6 @@ public class ValiddationBehavior<TRequest, TRespone>
             .ToList();
         if(failures.Count>0)
             throw new ValidationException(failures);
-        return await next();
+        return await next(cancellationToken);
     }
 }

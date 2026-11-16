@@ -17,7 +17,7 @@ public class LoggingBehavior<TRequest, TResponse>
         var timer= new Stopwatch();
         timer.Start();
 
-        var response= await next();
+        var response= await next(cancellationToken);
         
         timer.Stop();
         var timeTaken=timer.Elapsed;
