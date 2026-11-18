@@ -12,3 +12,4 @@ global using BuildingBlocks.Middleware;
 global using Discount.Grpc;
 global using HealthChecks.UI.Client;
 global using Marten;
+global using FluentValidation;
