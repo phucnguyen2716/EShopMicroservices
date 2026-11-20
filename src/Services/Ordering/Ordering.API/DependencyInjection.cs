@@ -1,6 +1,7 @@
 using BuildingBlocks.Exceptions.Handler;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.FeatureManagement;
 
 namespace Ordering.API;
 
@@ -12,6 +13,7 @@ public static class DependencyInjection
         services.AddExceptionHandler<CustomHandlerException>();
         services.AddHealthChecks()
             .AddSqlServer(configuration.GetConnectionString("Database")!);
+        services.AddFeatureManagement();
         return services;
     }
     public static WebApplication UseApiServices(this WebApplication app)
