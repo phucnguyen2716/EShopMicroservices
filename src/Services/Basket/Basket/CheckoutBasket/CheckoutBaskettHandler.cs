@@ -7,7 +7,7 @@ namespace Basket.API.CheccoutBasketEndpoints;
 public record CheckoutBasketCommand(BasketCheckoutDto BasketCheckoutDto)
     : ICommand <CheckoutBasketResult>;
 
-public record CheckoutBasketResult(bool IsResult);
+public record CheckoutBasketResult(bool isSuccess);
 public class CheckoutBasketCommandValidator 
     : AbstractValidator <CheckoutBasketCommand>
 {
