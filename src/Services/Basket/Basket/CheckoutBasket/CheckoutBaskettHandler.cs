@@ -27,9 +27,9 @@ public class CheckoutBasketHandler
         if (basket is null)
             return new CheckoutBasketResult(false);
         var eventMessage = command.BasketCheckoutDto.Adapt<BasketCheckOutEvent>();
-        eventMessage.TotalPrice = eventMessage.TotalPrice;
+        
 
-        await publishEvent.Publish(eventMessage);
+        await publishEvent.Publish(eventMessage,cancellationToken);
         await repository.DeleteBasket(command.BasketCheckoutDto.UserName,cancellationToken);
         return new CheckoutBasketResult(true);
     }
