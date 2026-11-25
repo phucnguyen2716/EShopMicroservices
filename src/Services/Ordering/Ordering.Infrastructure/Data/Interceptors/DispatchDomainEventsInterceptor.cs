@@ -22,7 +22,7 @@ public class DispatchDomainEventsInterceptors (IMediator mediator)
         if(context==null) return;
         var aggregates = context.ChangeTracker
             .Entries<IAggregate>()
-            .Where(a => a.Entity.DomainEvents.Any())
+            .Where(a => a.Entity.DomainEvents.Count > 0)
             .Select(a=>a.Entity);
         var domainEvents = aggregates.SelectMany(a=>a.DomainEvents).ToList();
         aggregates.ToList().ForEach(a=>a.ClearDomainEvents());
